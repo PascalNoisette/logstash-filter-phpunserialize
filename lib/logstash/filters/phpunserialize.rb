@@ -11,36 +11,46 @@ class LogStash::Filters::Phpunserialize < LogStash::Filters::Base
   #
   # filter {
   #   phpunserialize {
-  #     message => "My message..."
+  #     source => "source_fieldname"
   #   }
   # }
   #
   config_name "phpunserialize"
 
-  # Replace the message with this value.
-  config :message, :validate => :string, :default => "Hello World!"
-
+  # Source field to convert
+  config :source, :validate => :string, :required => true
+  
+  # Target field name
+  config :target, :validate => :string, :default => 'unserialized'
+  
+  # Append values to the `tags` field when unserialisation fails
+  config :tag_on_failure, :validate => :array, :default => ["_unserialisationfailure"]
 
   public
   def register
     # Add instance variables
+    require "php_serialize"
   end # def register
 
   public
   def filter(event)
+    
+      begin
+        deserialized = PHP.unserialize(event.get(@source));
+      rescue 
+        @tag_on_failure.each {|tag| event.tag(tag)}
+        deserialized =  "unserialize error"
+      end
+        
+      if !deserialized.is_a?(Hash)
+        deserialized = {@target => deserialized}
+      end
+    
+      deserialized.each_pair do |k, v|
+        event.set(k, v)
+      end
 
-    if @message
-      # Replace the event message with our message as configured in the
-      # config file.
-
-      # using the event.set API
-      event.set("message", @message)
-      # correct debugging log statement for reference
-      # using the event.get API
-      @logger.debug? && @logger.debug("Message is now: #{event.get("message")}")
-    end
-
-    # filter_matched should go in the last line of our successful code
-    filter_matched(event)
+      # filter_matched should go in the last line of our successful code
+      filter_matched(event)
   end # def filter
 end # class LogStash::Filters::Phpunserialize
