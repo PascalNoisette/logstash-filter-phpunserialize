@@ -6,7 +6,7 @@ describe LogStash::Filters::Phpunserialize do
   describe "Set to Hello World" do
     let(:config) do <<-CONFIG
       filter {
-        example {
+        phpunserialize {
           message => "Hello World"
         }
       }
