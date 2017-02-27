@@ -7,14 +7,18 @@ describe LogStash::Filters::Phpunserialize do
     let(:config) do <<-CONFIG
       filter {
         phpunserialize {
-          message => "Hello World"
+          source => message
         }
       }
     CONFIG
     end
 
-    sample("message" => "some text") do
-      expect(subject.get("message")).to eq('Hello World')
+    sample("message" => "i:456;") do
+      expect(subject.get("unserialized")).to eq(456)
+    end
+    
+    sample("message" => "a:1:{s:3:\"foo\";s:3:\"bar\";}") do
+      expect(subject.get("foo")).to eq("bar")
     end
   end
 end
