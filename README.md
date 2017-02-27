@@ -44,3 +44,16 @@ i:456;
     "message" => "i:456;",
     "unserialized" => 456
 }
+
+
+## Usage
+
+```
+filter {
+    phpunserialize {
+        source=>additional_information
+    }
+}
+
+```
+[voir sur gist](https://gist.github.com/PascalNoisette/8cf357090cd07b424e3c5ea7cf3c8e57.js)
