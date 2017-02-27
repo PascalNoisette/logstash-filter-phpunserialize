@@ -3,6 +3,8 @@ Read string serialized with php
 
 [![Travis Build Status](https://api.travis-ci.org/logstash-plugins/logstash-filter-phpunserialize.svg)](https://travis-ci.org/logstash-plugins/logstash-filter-phpunserialize)
 
+[![Gem Version](https://badge.fury.io/rb/logstash-filter-phpunserialize.svg)](https://badge.fury.io/rb/logstash-filter-phpunserialize)
+
 This is a plugin for [Logstash](https://github.com/elastic/logstash).
 
 It is fully free and fully open source. The license is Apache 2.0, meaning you are pretty much free to use it however you want in whatever way.
@@ -29,7 +31,7 @@ gem build logstash-filter-phpunserialize.gemspec
 
 ## Install
 
-bin/logstash-plugin install logstash-filter-phpunserialize-1.0.0.gem
+bin/logstash-plugin install logstash-filter-phpunserialize-1.0.1.gem
 bin/logstash-plugin list
 
 
