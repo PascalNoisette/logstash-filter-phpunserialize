@@ -26,3 +26,19 @@ bundle exec rspec
 
 gem build logstash-filter-phpunserialize.gemspec
 
+
+## Install
+
+bin/logstash-plugin install logstash-filter-phpunserialize-1.0.0.gem
+bin/logstash-plugin list
+
+
+## Inline test
+
+bin/logstash -e 'input { stdin{} } filter { phpunserialize {source=>message} } output {stdout { codec => rubydebug }}'
+
+i:456;
+{
+    "message" => "i:456;",
+    "unserialized" => 456
+}
